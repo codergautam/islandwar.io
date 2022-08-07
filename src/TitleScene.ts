@@ -22,7 +22,7 @@ class TitleScene extends Phaser.Scene {
   }
   create() {
     this.titleMusic = this.sound.add("titleMusic", {
-      volume: 0.5,
+      volume: 0.3, //0.5 --> 0.3 Too loud
       loop: true
     });
     this.titleMusic.play();
