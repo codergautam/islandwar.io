@@ -64,6 +64,35 @@ class Player {
       up: false,
       down: false,
     };
+  }
+  get socketHelper() {
+    return {
+      emit: (event, data) => {
+        var send = {
+          t: event,
+          d: data,
+        };
+        send = JSON.stringify(send);
+        this.socket.send(send);
+      },
+      to: (roomId) => {
+      return {
+         emit: (event, data) => {
+        var send = {
+          t: event,
+          d: data,
+        };
+
+        send = JSON.stringify(send);
+        roomlist.getRoom(roomId).players.forEach((p) => {
+          if(p.id != this.id) {
+            p.socket.send(send);
+          }
+        })
+      }
+        }
+      }
+    }
   }                                                                                                           
   joinRoom(room) {
     this.roomId = room.id;
@@ -71,11 +100,11 @@ class Player {
     var randomPos = mainIsland.getRandomPoint(0.4);
     this.pos = randomPos;
       
-    this.socket.emit("joinRoom", room.id);
+    this.socketHelper.emit("joinRoom", room.id);
   }
   updateController(controller) {
     //check if controller valid
-    if(controller.left === undefined || controller.right === undefined || controller.up === undefined || controller.down === undefined) {
+    if(!controller || controller.left === undefined || controller.right === undefined || controller.up === undefined || controller.down === undefined) {
       return;
     }
     //check if any extra properties are set
@@ -222,19 +251,19 @@ class Player {
       if(choice == 0) {
         this.speedLevel++;
         // console.log("speed level up");
-        this.socket.emit("levelUp", "speed", this.speedLevel);
+        this.socketHelper.emit("levelUp", "speed", this.speedLevel);
       } else if(choice == 1) {
         this.sizeLevel++;
         // console.log("size");
-        this.socket.emit("levelUp", "size", this.sizeLevel);
+        this.socketHelper.emit("levelUp", "size", this.sizeLevel);
       } else if(choice == 2) {
         this.bulletLevel++;
         // console.log("bullet");
-        this.socket.emit("levelUp", "bullet", this.bulletLevel);
+        this.socketHelper.emit("levelUp", "bullet", this.bulletLevel);
       } else if(choice == 3) {
         this.healthLevel++;
         // console.log("health");
-        this.socket.emit("levelUp", "health", this.healthLevel);
+        this.socketHelper.emit("levelUp", "health", this.healthLevel);
                 this.health =  this.maxHealth = 100 + (this.healthLevel == 1 ? 0 : this.healthLevel == 2 ? 40 : 70);
 
       }

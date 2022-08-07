@@ -1,5 +1,6 @@
 const intersect = require("intersects");
-const io = require("../helpers/io");  
+// const io = require("../helpers/io");  
+const ws = require("../helpers/ws");
 const idgen = require("../helpers/idgen");
 const Pepper = require("./Pepper");
 module.exports = class Island {
@@ -65,7 +66,7 @@ module.exports = class Island {
     this.getPeppers(room).forEach(pepper => {
       if(pepper.color != this.capturedBy) {
         room.peppers.delete(pepper.id);
-        io.getio().to(room.id).emit("pepperCollected", pepper.id);
+        ws.helper.to(room.id).emit("pepperCollected", pepper.id);
       }
     }
     );
@@ -102,7 +103,7 @@ module.exports = class Island {
     this.currentwhat.capturingBy = this.capturingBy;
 
     if(!this.check()) {
-      io.getio().to(room.id).emit("islandState", this.id, this.currentwhat, this.capturedPercentage);
+      ws.helper.to(room.id).emit("islandState", {id: this.id, what: this.currentwhat, percent: this.capturedPercentage});
       console.log("islandState", this.currentwhat);
       this.lastSendWhat = JSON.parse(JSON.stringify(this.currentwhat));
     }

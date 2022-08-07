@@ -1,6 +1,7 @@
 const idgen = require("../helpers/idgen");
 const intersect = require("intersects");
-const io = require("../helpers/io");
+// const io = require("../helpers/io");
+const ws = require("../helpers/ws");
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -40,7 +41,8 @@ class Bullet {
     this.id = idgen();
 
     this.length = 5;
-    io.getio().to(this.roomId).emit("addBullet", this.getSendObject());
+    ws.helper.to(this.roomId).emit("addBullet", this.getSendObject());
+  console.log("bullet created")
   }
   tick(tickDiff) {
     this.pos.x += Math.cos(this.angle) * this.speed * 50 * (tickDiff / 50);

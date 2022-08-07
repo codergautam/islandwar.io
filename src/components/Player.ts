@@ -264,7 +264,7 @@ export default class Player extends Phaser.GameObjects.Container {
     if ((this.scene as GameScene).socket.id != this.id)
     
       // this.image.setRotation(this.toAngle + (this.needsFlip ? Math.PI - 0.6 : 0));
-      this.image.setRotation(rLerp(this.image.rotation -(this.needsFlip ? Math.PI - 0.6 : 0), this.toAngle, 0.6)+(this.needsFlip ? Math.PI - 0.6 : 0));
+      this.image.setRotation(rLerp(this.image.rotation, this.toAngle, 0.6));
     else
       this.image.setRotation(
         (this.scene as GameScene).mouseAngle + Math.PI + 0.35
@@ -273,19 +273,7 @@ export default class Player extends Phaser.GameObjects.Container {
     // console.log(this.image.rotation);
 
     // if(this.id == (this.scene as GameScene).socket.id) {
-     if (this.image.rotation - (this.id != (this.scene as GameScene).socket.id && this.needsFlip ? Math.PI -0.6 : 0 ) > Math.PI / 2 || this.image.rotation -  (this.id != (this.scene as GameScene).socket.id && this.needsFlip ? Math.PI -0.6 : 0 ) < -Math.PI / 2) {
-      this.image.scaleX = -1 * this.realScaleX;
-     if(this.id == (this.scene as GameScene).socket.id) { 
-      // console.log(this.image.rotation);
-      this.image.rotation += Math.PI - 0.6 
-    };
-    this.needsFlip = true;
-    // console.log("flip");
-    } else {
-      this.image.scaleX = 1 * this.realScaleX;
-      this.needsFlip = false;
-
-    }
+    //  if (this.image.rotation - (this.id != (this.scene as GameScene).socket.id && this.needsFlip ? Math.PI -0.6 : 0 ) > Math.PI / 2 || this.image.rotation 
   // }
     
 

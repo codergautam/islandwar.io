@@ -10,6 +10,7 @@ import GameMap from "./components/Map";
 import Pepper from "./components/Pepper";
 import Player from "./components/Player";
 import TeamPicker from "./components/TeamPicker";
+import MySocket from "./helpers/mySocket";
 import { PlayerData, FirstPlayerData, BulletData, IslandData, BridgeData, PepperData } from "./helpers/Packets";
 
 interface Keys {
@@ -30,7 +31,7 @@ class GameScene extends Phaser.Scene {
   mobile: boolean;
   canvas: { width: number, height: number };
   name: string;
-  socket: Socket;
+  socket: MySocket;
   loadingText: Phaser.GameObjects.Text;
   ready: boolean;
   players: Map<string, Player>;
@@ -311,9 +312,11 @@ this.lastKnownMyDisplayWidth = 0;
         this.uiCam.fadeIn(100)
         this.cameras.main.ignore(this.loadingText);
         this.loadingText.setFontSize(this.canvas.width / 20);
-      this.socket = io(undefined, {transports: ["websocket"]});
-      this.socket.emit("go", this.name, team, this.mobile?true:false, thetoken); 
-         // this.socket.emit("go", this.name, team, true, thetoken); 
+        this.socket = new MySocket(new WebSocket("ws://localhost:3000/ws"));
+        this.socket.socket.onopen = () => {
+          console.log("Connected");
+      this.socket.send("go", {name: this.name, team: team, mouseMove: this.mobile?true:false, thetoken: thetoken}); 
+         // this.socket.send("go", this.name, team, true, thetoken); 
          
       this.team = `${team}`;
 
@@ -432,7 +435,9 @@ this.minimap.setVisible(false);
           })
         })
 
-        this.socket.on("pepperCollected", (id, who) => {
+        this.socket.on("pepperCollected", (data: {id: string, who: string}) => {
+          var id = data.id;
+          var who = data.who;
           if(this.peppers.has(id)) {
             var pepper=  this.peppers.get(id);
             if(who == this.socket.id) this.pick.play();
@@ -461,12 +466,12 @@ this.minimap.setVisible(false);
         // console.log("playerJoined", data);
         playerJoined(data);
       });
-      this.socket.on("islandState", (id: number, data: {state: number, capturedBy: string, capturingBy: string, dir: number}, capturedPercentage: number) => {
-        if(this.islands.find(i => i.id == id)) {
+      this.socket.on("islandState", ( data: {id: number, what: {state: number, capturedBy: string, capturingBy: string, dir: number}, percent: number}) => {
+        if(this.islands.find(i => i.id == data.id)) {
           console.log("islandUpdate", data);
 
-          var island = this.islands.find(i => i.id == id);
-          island.setCurState(data, capturedPercentage);
+          var island = this.islands.find(i => i.id == data.id);
+          island.setCurState({dir: data.what.dir, capturedBy: data.what.capturedBy, capturingBy: data.what.capturingBy, state: data.what.state}, data.percent);
         }
       })
       this.socket.on("islandUpdate", (data: IslandData) => {
@@ -730,76 +735,76 @@ try {
     }
 
          keys.space.on('down', () => {
-            this.socket.emit("down", true);
+            this.socket.send("down", true);
          })
          keys.space.on('up', () => {
-            this.socket.emit("down", false);
+            this.socket.send("down", false);
          })
 
     keys.up.on('down', () => {
       this.controller.up = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.down.on('down', () => {
       this.controller.down = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.left.on('down', () => {
       this.controller.left = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     }); 
     keys.right.on('down', () => {
       this.controller.right = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.w.on('down', () => {
       this.controller.up = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.s.on('down', () => {
       this.controller.down = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.a.on('down', () => {
       this.controller.left = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.d.on('down', () => {
       this.controller.right = true;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
 
     keys.up.on('up', () => {
       this.controller.up = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.down.on('up', () => {
       this.controller.down = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.left.on('up', () => {
       this.controller.left = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     }); 
     keys.right.on('up', () => {
       this.controller.right = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.w.on('up', () => {
       this.controller.up = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.s.on('up', () => {
       this.controller.down = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.a.on('up', () => {
       this.controller.left = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
     keys.d.on('up', () => {
       this.controller.right = false;
-      this.socket.emit("controller", this.controller);
+      this.socket.send("controller", this.controller);
     });
 
     this.input.on("pointermove", (pointer: PointerEvent) => {
@@ -812,17 +817,17 @@ try {
 
     this.input.on("pointerdown", (p: PointerEvent) => {
       // console.log("pointerdown");
-      this.socket.emit("down", true);
+      this.socket.send("down", true);
       this.gamePoint = {x: p.x, y: p.y};
     })
     this.input.on("pointerup", (p: PointerEvent) => {
-      this.socket.emit("down", false);
+      this.socket.send("down", false);
       this.gamePoint = {x: p.x, y: p.y};
     });
 
     setInterval(() => {
       var start = Date.now();
-      this.socket.emit( 'ping', function clientCallback() {
+      this.socket.send( 'ping', function clientCallback() {
          console.log( 'Websocket RTT: ' + (Date.now() - start) + ' ms' );
       });
     }, 2000);
@@ -954,6 +959,7 @@ if(this.dominationBar && this.dominationBar.visible) {
 
   resize();
 }
+      }
 // console.log(window.localStorage.getItem("story"));
 if(( this.localStorageAvailable &&window.localStorage.getItem("story") == "true") || this.storyWatched){
   console.log("story");
@@ -993,6 +999,7 @@ if(( this.localStorageAvailable &&window.localStorage.getItem("story") == "true"
       }
     });
     
+  
   }
        
   }
@@ -1118,7 +1125,7 @@ if(this.vid && this.vid.visible) {
         // console.log(distance);
         
       // console.log(this.players.get(this.socket.id).needsFlip);
-      this.socket.emit("mouse", this.mouseAngle, distance, this.players.get(this.socket.id).needsFlip);
+      this.socket.send("mouse", {mouseAngle: this.mouseAngle, distance, needsFlip: false});
       }
 
      if(this.team && !this.loadingText.visible) this.dominationText.setText(Math.round(totalDomination[this.team]) ==  Math.round(totalDomination[oppositeTeam]) ? "The game is tied!" : Math.round(totalDomination[this.team]) >  Math.round(totalDomination[oppositeTeam]) ? "Your team is winning!" : "Your team is losing!");

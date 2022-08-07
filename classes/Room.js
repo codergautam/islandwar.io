@@ -1,5 +1,5 @@
 const idgen = require("../helpers/idgen");
-const io = require("../helpers/io");
+const ws = require("../helpers/ws");
 const intersect = require("intersects");
 const Island = require("./Island");
 const Bridge = require("./Bridge");
@@ -66,27 +66,27 @@ class Room {
 
   }
   addPlayer(player) {
-    var ioinstance = io.getio();
+    var ioinstance = ws.helper
     player.joinRoom(this);
     this.players.set(player.id, player);
-    player.socket.join(this.id);
+    // player.socket.join(this.id);
     
     //TODO: only send players in range
     ioinstance.to(this.id).emit("playerJoined", player.getFirstSendObject());
-    player.socket.emit("players", [...this.players.values()].map((player) => player.getFirstSendObject()));
-    player.socket.emit("bullets", this.bullets.map((bullet) => bullet.getSendObject()));
-    player.socket.emit("islands", this.islands.map((island) => island.getSendObject()));
-    player.socket.emit("bridges", this.bridges.map((bridge) => bridge.getSendObject()));
+    player.socketHelper.emit("players", [...this.players.values()].map((player) => player.getFirstSendObject()));
+    player.socketHelper.emit("bullets", this.bullets.map((bullet) => bullet.getSendObject()));
+    player.socketHelper.emit("islands", this.islands.map((island) => island.getSendObject()));
+    player.socketHelper.emit("bridges", this.bridges.map((bridge) => bridge.getSendObject()));
 
     // this.islands.forEach((island) => {
     //   player.socket.emit("islandState", island.id, island.currentwhat)
     // });
   }
   removePlayer(id) {
-    var ioinstance = io.getio();
+    var ioinstance = ws.helper;
     var player = this.players.get(id);
     if(player) {
-      player.socket.leave(this.id);
+      // player.socket.leave(this.id);
       this.players.delete(id);
       ioinstance.to(this.id).emit("playerLeft", id);
     }
@@ -148,12 +148,12 @@ class Room {
         reason.who = {id: lastHitPlayer.id, name: lastHitPlayer.name};
       }
 
-      player.socket.emit("youDied", {reason: "drown", who: reason.tick ? null : reason.who.name, survivedTime: Date.now() - player.spawnTime, peppers: player.peppers, shotDragons: player.shotDragons});
-      player.socket.to(this.id).emit("playerLeft", player.id);
+      player.socketHelper.emit("youDied", {reason: "drown", who: reason.tick ? null : reason.who.name, survivedTime: Date.now() - player.spawnTime, peppers: player.peppers, shotDragons: player.shotDragons});
+      player.socketHelper.to(this.id).emit("playerLeft", player.id);
       if(!reason.tick && this.players.has(reason.who.id)) {
         this.players.get(reason.who.id).shotDragons++;
         this.players.get(reason.who.id).peppers += Math.min(Math.max(10,Math.round(player.peppers * 0.5)), 1000);
-        this.players.get(reason.who.id).socket.emit("shotDragon", {reason: "drown", who: player.name, id: player.id});
+        this.players.get(reason.who.id).socketHelper.emit("shotDragon", {reason: "drown", who: player.name, id: player.id});
       }
       this.players.delete(player.id);
     }
@@ -178,7 +178,7 @@ class Room {
   tick() {
     var tickDiff = Date.now() - this.lastTick;
     this.lastTick = Date.now();
-    var ioinstance = io.getio();
+    var ioinstance = ws.helper
     this.players.forEach((player) => {
 
       player.tick(tickDiff);
@@ -187,7 +187,7 @@ class Room {
         if(pepper.touchingPlayer(player)) {
           player.peppers ++;
           this.peppers.delete(pepper.id);
-          ioinstance.emit("pepperCollected", pepper.id, player.id);
+          ioinstance.to(this.id).emit("pepperCollected", {id: pepper.id, who: player.id});
         };
       });
 
@@ -227,20 +227,20 @@ class Room {
           player.lastHit = Date.now();
           player.whoLastHit = bullet.owner;
           if(player.health <= 0) {
-            player.socket.emit("youDied", {reason: "burnt", who: bullet.ownerName, survivedTime: Date.now() - player.spawnTime, peppers: player.peppers, shotDragons: player.shotDragons});
-            player.socket.to(this.id).emit("playerLeft", player.id);
+            player.socketHelper.emit("youDied", {reason: "burnt", who: bullet.ownerName, survivedTime: Date.now() - player.spawnTime, peppers: player.peppers, shotDragons: player.shotDragons});
+            player.socketHelper.to(this.id).emit("playerLeft", player.id);
             if(this.players.has(bullet.owner)) {
               this.players.get(bullet.owner).shotDragons++;
               this.players.get(bullet.owner).peppers += Math.round(player.peppers * 0.5);
-              this.players.get(bullet.owner).socket.emit("shotDragon", {reason: "burnt", who: player.name, id: player.id});
+              this.players.get(bullet.owner).socketHelper.emit("shotDragon", {reason: "burnt", who: player.name, id: player.id});
             }
             this.players.delete(player.id);
           } else {
 
-            player.socket.emit("gotHit");
+            player.socketHelper.emit("gotHit");
           if(this.players.has(bullet.owner)) {
             var owner = this.players.get(bullet.owner);
-            owner.socket.emit("hitSomeone");
+            owner.socketHelper.emit("hitSomeone");
           }
         }
 
