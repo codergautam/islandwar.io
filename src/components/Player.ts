@@ -61,7 +61,7 @@ export default class Player extends Phaser.GameObjects.Container {
       scene,
       0,
       0,
-      team == "red" ? "redDragon" : "blueDragon"
+      team == "red" ? "redPlayer" : "bluePlayer"
     ).setOrigin(0.5);
 
     const convert = (num, val, newNum) => (newNum * val) / num
@@ -148,9 +148,7 @@ export default class Player extends Phaser.GameObjects.Container {
 
  
 
-    if(data.canFly) {
-      this.image.setTexture(this.team+"Winged");
-    }
+
 
     const convert = (num, val, newNum) => (newNum * val) / num
     // console.log(convert(100, 40, this.bodySize));
@@ -209,7 +207,6 @@ export default class Player extends Phaser.GameObjects.Container {
         if(!(this.scene as GameScene).shownFly) {
           (this.scene as GameScene).shownFly = true;
           (this.scene as GameScene).levelQueue.push("Flying activated!!! 🚀");
-          this.image.setTexture(this.team+"Winged");
         }
 
       } else (this.scene as GameScene).spiceText.setText("🌶️  Spicy Level: "+data.level+" ("+Math.round((data.peppers - sum)/(data.untilNextLevel - sum)*100)+"%)");

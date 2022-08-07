@@ -48,7 +48,7 @@ class Player {
     this.maxHealth = 100;
     this.damage = 7;
 
-    this.bodySize = 100 + (this.sizeLevel == 1 ? 0 : this.sizeLevel == 2 ? 20 : 40);
+    this.bodySize = 80 + (this.sizeLevel == 1 ? 0 : this.sizeLevel == 2 ? 20 : 40);
 
 
     this.team = Math.random() > 0.5 ? "red" : "blue";
@@ -278,7 +278,7 @@ class Player {
       }
     }
 
-    this.bodySize = 100 + (this.sizeLevel == 1 ? 0 : this.sizeLevel == 2 ? 50 : 100);
+    this.bodySize = 80 + (this.sizeLevel == 1 ? 0 : this.sizeLevel == 2 ? 50 : 100);
     // console.log(this.bodySize);/
 
     var corners = this.getCorners(0.5);

@@ -13,21 +13,20 @@ class Bullet {
   constructor(player, offset) {
     this.speed = player.speed / 2; 
     this.angle = player.lookAngle;
+    console.log(player.lookAngle/Math.PI*180);
     //cloning the object is necessary because the object is changed in the tick function
     this.pos = JSON.parse(JSON.stringify(player.pos));
-    if(player.needsFlip) {
-      this.angle -= (Math.PI / 2) - 0.2;
-    }
+  
     const convert = (num, val, newNum) => (newNum * val) / num
     const multiplier = convert(100, 75, player.bodySize);
-    this.pos.x += (Math.cos(this.angle + Math.PI / 4) * this.speed * (multiplier));
-    this.pos.y += (Math.sin(this.angle + Math.PI / 4) * this.speed * (multiplier));
+    this.pos.x += (Math.cos(this.angle ) * this.speed * (multiplier));
+    this.pos.y += (Math.sin(this.angle ) * this.speed * (multiplier));
 
     var mult = player.speedLevel == 1 ? 1 : player.speedLevel == 2 ? 1.5 : 2;
     this.speed = player.speed /1.5;
     this.speed *= mult;
     // console.log(offset)
-    this.angle = player.lookAngle - 0.3 + (offset * Math.PI / 180);
+    this.angle = player.lookAngle 
     if(player.needsFlip) {
       this.angle += (Math.PI / 2) - 1;
     }
