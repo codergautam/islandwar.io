@@ -1,12 +1,12 @@
 const express = require("express");
 var http = require("http");
 require("dotenv").config();
-
+const helmet = require("helmet"); //require helmet
 const app = express();
 var process = require("process");
 const ws = require("./helpers/ws");
 
-
+app.use(helmet()); //Use helmet
 app.use(express.json());
 
 var server = http.createServer(app);
@@ -14,6 +14,13 @@ var expressWs = require('express-ws')(app, server);
 
 ws.set(expressWs);
 
+
+	const rateLimit = require("express-rate-limit");
+	const limiter = rateLimit({
+		windowMs: 60 * 1000, // 1 min
+		max: 300, // limit each IP to 52 requests per min 
+	});
+	app.use(limiter);
 
 
 const Player = require("./classes/Player");
