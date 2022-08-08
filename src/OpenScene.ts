@@ -60,6 +60,8 @@ var progress = (1 - (remainder / total) as any);
       this.load.audio("titleMusic", "/assets/audio/title.mp3");
       this.load.audio("pick", "/assets/audio/pick.wav");
 
+      this.load.image("pistol", "/assets/images/pistol.png");
+
       // this.load.video("intro", "/assets/videos/intro.mp4", 'canplaythrough', false, true);
 
       this.load.image("redFlag", "/assets/images/redFlag.png");

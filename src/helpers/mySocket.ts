@@ -8,10 +8,10 @@ export default class MySocket extends EventEmitter {
     this.socket = socket;
 
     this.socket.onmessage = (e) => {
-      console.log('onmessage');
+      // console.log('onmessage');
       var rec = JSON.parse(e.data);
       if(rec.t == "id") this.id = rec.d;
-      console.log(rec);
+      // console.log(rec);
       this.emit(rec.t, rec.d);
     };
   }

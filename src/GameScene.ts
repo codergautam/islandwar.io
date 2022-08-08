@@ -202,9 +202,7 @@ this.lastKnownMyDisplayWidth = 0;
         if(this.vid && this.vid.visible) {
           var vidEnds = [3, 7, 11, 15, 19, 23];
           // var vidStops = [1, 5.7, 9, 14, 17.5, 23];
-          console.log(this.vid.getCurrentTime());
           this.vid.setPaused(false);
-          console.log("Playing");
           this.vidText.setVisible(false);
 
 
@@ -438,6 +436,7 @@ this.minimap.setVisible(false);
         this.socket.on("pepperCollected", (data: {id: string, who: string}) => {
           var id = data.id;
           var who = data.who;
+          console.log(id, who);
           if(this.peppers.has(id)) {
             var pepper=  this.peppers.get(id);
             if(who == this.socket.id) this.pick.play();
@@ -468,7 +467,6 @@ this.minimap.setVisible(false);
       });
       this.socket.on("islandState", ( data: {id: number, what: {state: number, capturedBy: string, capturingBy: string, dir: number}, percent: number}) => {
         if(this.islands.find(i => i.id == data.id)) {
-          console.log("islandUpdate", data);
 
           var island = this.islands.find(i => i.id == data.id);
           island.setCurState({dir: data.what.dir, capturedBy: data.what.capturedBy, capturingBy: data.what.capturingBy, state: data.what.state}, data.percent);
@@ -499,7 +497,7 @@ try {
 
           this.players.delete(id);
 } catch(e) {
-  console.log("vdgj")
+  console.log(e)
 }
               },
             });

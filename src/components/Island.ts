@@ -68,7 +68,7 @@ export default class Island extends Phaser.GameObjects.Container {
     this.setTeam(state.capturedBy);
     this.dir = state.dir;
     this.capturingBy = state.capturingBy;
-    console.log(state.capturedBy, state.capturingBy);
+    // console.log(state.capturedBy, state.capturingBy);
     this.setPercent(capturedPercentage, state.capturingBy);
   }
   setTeam(team: string) {
@@ -140,7 +140,7 @@ export default class Island extends Phaser.GameObjects.Container {
     }
   }
   setPercent(percent: number, team: string) {
-    console.log(team, percent)
+    // console.log(team, percent)
     this.capturingCircle.setFillStyle(team == "red" ? 0xFF3632 : team == "none" ? 0x838579 : 0x0096ff);
     this.capturingCircle.setVisible(true);
     this.capturingCircle.setScale(percent/100);
@@ -153,7 +153,7 @@ export default class Island extends Phaser.GameObjects.Container {
     var x2 = this.x;
     var y2 = this.y;
     var dist = Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
-    console.log(dist, radius, dist < radius);
+    // console.log(dist, radius, dist < radius);
     return dist < radius;
   }
   preUpdate(delta) {

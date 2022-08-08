@@ -66,7 +66,7 @@ module.exports = class Island {
     this.getPeppers(room).forEach(pepper => {
       if(pepper.color != this.capturedBy) {
         room.peppers.delete(pepper.id);
-        ws.helper.to(room.id).emit("pepperCollected", pepper.id);
+        ws.helper.to(room.id).emit("pepperCollected", {id: pepper.id});
       }
     }
     );

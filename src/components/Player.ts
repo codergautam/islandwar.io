@@ -5,6 +5,7 @@ import HealthBar from "./HealthBar";
 
 export default class Player extends Phaser.GameObjects.Container {
   gun: Phaser.GameObjects.Rectangle;
+  pistol: Phaser.GameObjects.Image;
   square: Phaser.GameObjects.Rectangle;
   bodySize: number;
   lastTick: number;
@@ -63,10 +64,17 @@ export default class Player extends Phaser.GameObjects.Container {
       0,
       team == "red" ? "redPlayer" : "bluePlayer"
     ).setOrigin(0.5);
+    this.pistol = new Phaser.GameObjects.Image(
+      scene,
+      0,
+      0,
+      "pistol"
+    ).setOrigin(0.5).setScale(1.5);
+
 
     const convert = (num, val, newNum) => (newNum * val) / num
 
-    this.realScaleX = convert(100, 0.5, this.bodySize);
+    this.realScaleX = convert(100, 0.25, this.bodySize);
     this.image.setScale(this.realScaleX);
 
     this.circle = new Phaser.GameObjects.Ellipse(this.scene, 0, 0, this.bodySize, this.bodySize, team == "red" ? 0xFF0000 : 0x0000FF).setDepth(4958).setOrigin(0.5);
@@ -110,14 +118,17 @@ export default class Player extends Phaser.GameObjects.Container {
 
     // this.add(this.square);
     // this.add(this.gun);
+    this.add(this.pistol);
+
     this.add(this.image);
     this.add(this.healthBar);
+
     this.add(this.circle)
     if (this.id != (this.scene as GameScene).socket.id) this.add(this.nameTag);
     this.scene.add.existing(this);
     (this.scene as GameScene).uiCam.ignore(this);
     (this.scene as GameScene).minimap.ignore([this.healthBar, this.nameTag, this.image]);
-        console.log(this.joinTime, this.name, Date.now() - this.joinTime)
+        // console.log(this.joinTime, this.name, Date.now() - this.joinTime)
     if(Date.now() - this.joinTime < 3000) {
       this.scene.tweens.add({
         targets: this.image,
@@ -163,7 +174,7 @@ export default class Player extends Phaser.GameObjects.Container {
     // this.nameTag.x = 0
     
     
-    this.realScaleX = convert(100, 0.5, data.bodySize);
+    this.realScaleX = convert(100, 0.25, data.bodySize);
     // console.log(data.bodySize);
 
     if(this.realScaleX != this.image.scaleX) {
@@ -172,8 +183,8 @@ export default class Player extends Phaser.GameObjects.Container {
       this.circle.displayWidth = data.bodySize;
       this.circle.setFillStyle(this.id == (this.scene as GameScene).socket.id ? 0xFFFF00 : this.team == "red" ? 0xFF0000 : 0x0000FF);
       this.healthBar.y = 0;
-      this.healthBar.bar.y = -1.1 * (this.image.displayHeight / 2);
-      this.nameTag.y = -1.3 * (this.image.displayHeight / 2);
+      this.healthBar.bar.y = -1.6 * (this.image.displayHeight / 2);
+      this.nameTag.y = -1.9 * (this.image.displayHeight / 2);
     } 
 
     this.healthBar.maxValue = data.maxHealth;
@@ -195,7 +206,7 @@ export default class Player extends Phaser.GameObjects.Container {
       if(!this.oldUntilNextLevel) this.oldUntilNextLevel = [data.untilNextLevel];
       if(this.oldLevel != data.level) {
         (this.scene as GameScene).spicyMeter.setLerpValue(0);
-        console.log("level up");
+        // console.log("level up");
         this.oldUntilNextLevel.push(data.untilNextLevel);
       }
       // console.log(data.peppers/data.untilNextLevel*100);
@@ -264,8 +275,13 @@ export default class Player extends Phaser.GameObjects.Container {
       this.image.setRotation(rLerp(this.image.rotation, this.toAngle, 0.6));
     else
       this.image.setRotation(
-        (this.scene as GameScene).mouseAngle + Math.PI + 0.35
+        (this.scene as GameScene).mouseAngle + Math.PI
       );
+
+      this.pistol.setRotation(this.image.rotation+(Math.PI/2));
+      //move pistol by angle
+      this.pistol.x = this.image.x - Math.cos(this.image.rotation)*this.image.displayWidth/2;
+      this.pistol.y = this.image.y - Math.sin(this.image.rotation)*this.image.displayWidth/2;
 
     // console.log(this.image.rotation);
 
