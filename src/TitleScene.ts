@@ -47,7 +47,7 @@ class TitleScene extends Phaser.Scene {
     });
 
 
-    this.text = this.add.text(0, 0, "Spicywar.io", {
+    this.text = this.add.text(0, 0, "Islandwar.io", {
       fontSize: "64px",
       color: "#000000",
       fontFamily: "Finlandica, Arial",

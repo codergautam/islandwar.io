@@ -1,26 +1,24 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-<link rel="icon" type="image/png" href="/assets/images/sword.png" />
-
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<link rel="shortcut icon" type="image/jpg" href="favicon.png" />
-<meta charset="utf-8">
+  <head>
+  <link rel="icon" type="image/png" href="/assets/images/sword.png" />
+	    <! -- Added favicon (Same as forum's one) #FixbyLuis  -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+		<link rel="shortcut icon" type="image/jpg" href="favicon.png"/>
+ <meta charset="utf-8">
 <meta name="description" content="A fun multiplayer game where you fight with 2d swords! Play with friends or go solo, all in the comfort or your web browser.">
-<meta name="keywords" content="IOGAME, swordbattle, codergautam, swordiogame, swordio">
-<meta name="author" content="CoderGautam">
-<meta name="viewport" content="width=device-width">
-
-<title>Waterwar.io</title>
-<style>
+ <meta name="keywords" content="IOGAME, swordbattle, codergautam, swordiogame, swordio">
+ <meta name="author" content="CoderGautam">
+ <meta name="viewport" content="width=device-width">
+	  <! -- Added MetaTags so that descriptions are shown in the indexed results of google, twitter, facebook, discord etc. #FixbyLuis  -->
+    <title>Swordbattle.io</title>
+    <style>
 
 .title {
 	font-family: courier, cursive;
 	font-size: 130px;
 }
-
 .container {
     position: absolute;
 		margin: 0px;
@@ -69,7 +67,7 @@
     -webkit-transform: translateX(-50%) translateY(-60%);
     transform: translateX(-50%) translateY(10%);
 transition-duration: 0.4s;
-      background-color: #2e74e6; /* blue */
+      background-color: #4CAF50; /* Green */
   color: white;
   padding: 7.5px 16px;
   text-align: center;
@@ -78,13 +76,9 @@ transition-duration: 0.4s;
    border: 2px solid black;
 }
 
-input, button{
-    margin:0;
-}
-
 .button:hover {
   background-color: #ffffff;
-  color: #2e74e6;
+  color: #4CAF50
 }
 
 @media screen and (max-height: 660px) {
@@ -163,18 +157,31 @@ input, button{
 .loggedin::selection {
   color: black;
 }
+@media only screen and (hover: none) and (pointer: coarse){
+
+/* Regular CSS rules here*/
+.no-zoom {
+    font-size: 16px;
+    transform-origin: top left;
+    transform: scale(0.875);        
+    padding: 4.57px;                   
+}
+}
+
+d{}
       </style>
-</head>
-<script src="script.js" type="eb309a5872f933ee98ec44f8-text/javascript"></script>
-<body>
-<div class='form' id='input-form'>
-<input id="box" autocomplete="off" class="textbox" name="name" STYLE="color: black; font-family: Verdana; font-weight: bold; background-color: white; border:3px solid #000000; " size="20" maxlength="16" value="" placeholder='Enter Name'></input>
-<br></br>
-<br></br>
-<button name="btn" class="button size">Play!</button>
-</div>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="eb309a5872f933ee98ec44f8-|49" defer=""></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"718e0d2e69552bf4","version":"2021.12.0","r":1,"token":"19808da52d6a413099d39b5c06310939","si":100}' crossorigin="anonymous"></script>
+  </head>
+	      
+    <script src="script.js"></script>
+			<body>
+				<div class='form' id='input-form'>
+        <input id="box" class="textbox no-zoom" name="name" style="color: black; font-family: Verdana; font-weight: bold; background-color: white; border:3px solid #000000;"   maxlength="16" value="" placeholder='Enter Name'></input>
+        <br></br>
+				<br></br>
+				<button name="btn" class="button size">Play!</button>
+        </div>
 </body>
+
 </div>
 <br>
 </html>

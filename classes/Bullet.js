@@ -26,7 +26,7 @@ class Bullet {
     this.speed = player.speed /1.5;
     this.speed *= mult;
     // console.log(offset)
-    this.angle = player.lookAngle 
+    this.angle = player.lookAngle +(offset * Math.PI / 180);
     if(player.needsFlip) {
       this.angle += (Math.PI / 2) - 1;
     }

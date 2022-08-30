@@ -538,6 +538,7 @@ try {
       })
       this.socket.on("addBullet", (data: BulletData) => {
         if(!this.bullets.has(data.id)) {
+          console.log("addBullet", data);
           this.bullets.set(data.id, new Bullet(this, data).setDepth(1));
           if(data.owner == this.socket?.id) {
             this.shoot.play();

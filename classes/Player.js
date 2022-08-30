@@ -211,17 +211,40 @@ class Player {
     
     var levelMult = this.speedLevel == 1 ? 1.5 : this.speedLevel == 2 ? 2 : 3;
     if(!this.mouseMove) {
-    if(this.controller.left) {
-      this.pos.x -= tickDiff * 0.18 * this.speed * this.speedMultiplier * levelMult;
+    // get angle from controller
+    var angle = 0;
+    
+    if(this.controller.down && this.controller.right) {
+      angle += 0.785398;
     }
-    if(this.controller.right) {
-      this.pos.x += tickDiff * 0.18 * this.speed * this.speedMultiplier * levelMult;
+    else if(this.controller.down && this.controller.left) {
+      angle += 2.35619;
     }
-    if(this.controller.up) {
-      this.pos.y -= tickDiff * 0.18 * this.speed * this.speedMultiplier * levelMult;
+    else if(this.controller.up && this.controller.right) {
+      angle += 5.49779;
     }
-    if(this.controller.down) {
-      this.pos.y += tickDiff * 0.18* this.speed  * this.speedMultiplier * levelMult;
+    else if(this.controller.up && this.controller.left) {
+      angle += 3.92699;
+    }
+    else if(this.controller.down) {
+      angle += 1.570796;
+    }
+    else if(this.controller.up) {
+      angle += 4.712389;
+    }
+    else if(this.controller.right) {
+      angle += 0;
+    }
+    else if(this.controller.left) {
+      angle += 3.141593;
+    }
+    
+    var isMoving = this.controller.left || this.controller.right || this.controller.up || this.controller.down;
+    if(isMoving) {
+    var speed = this.speed * this.speedMultiplier * levelMult;
+    
+    this.pos.x += Math.cos(angle) * speed * tickDiff * 0.18;
+    this.pos.y += Math.sin(angle) * speed * tickDiff * 0.18;
     }
   } else 
 

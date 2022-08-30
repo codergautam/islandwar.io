@@ -4,8 +4,7 @@ import { PlayerData } from "../helpers/Packets";
 import HealthBar from "./HealthBar";
 
 export default class Player extends Phaser.GameObjects.Container {
-  gun: Phaser.GameObjects.Rectangle;
-  pistol: Phaser.GameObjects.Image;
+  gun: Phaser.GameObjects.Image;
   square: Phaser.GameObjects.Rectangle;
   bodySize: number;
   lastTick: number;
@@ -64,12 +63,12 @@ export default class Player extends Phaser.GameObjects.Container {
       0,
       team == "red" ? "redPlayer" : "bluePlayer"
     ).setOrigin(0.5);
-    this.pistol = new Phaser.GameObjects.Image(
+    this.gun = new Phaser.GameObjects.Image(
       scene,
       0,
       0,
       "pistol"
-    ).setOrigin(0.5).setScale(1.5);
+    ).setOrigin(0.5).setScale(1.2, 0.8);
 
 
     const convert = (num, val, newNum) => (newNum * val) / num
@@ -118,7 +117,7 @@ export default class Player extends Phaser.GameObjects.Container {
 
     // this.add(this.square);
     // this.add(this.gun);
-    this.add(this.pistol);
+    this.add(this.gun);
 
     this.add(this.image);
     this.add(this.healthBar);
@@ -153,7 +152,7 @@ export default class Player extends Phaser.GameObjects.Container {
     }
   }
   tick(data: PlayerData, hit: boolean) {
-    this.toAngle = data.lookAngle + Math.PI + 0.35;
+    this.toAngle = data.lookAngle + Math.PI ;
     // if(this.needsFlip) this.toAngle -= Math.PI - 0.6;
     this.lastTick = Date.now();
 
@@ -278,10 +277,10 @@ export default class Player extends Phaser.GameObjects.Container {
         (this.scene as GameScene).mouseAngle + Math.PI
       );
 
-      this.pistol.setRotation(this.image.rotation+(Math.PI/2));
+      this.gun.setRotation(this.image.rotation+(Math.PI/2));
       //move pistol by angle
-      this.pistol.x = this.image.x - Math.cos(this.image.rotation)*this.image.displayWidth/2;
-      this.pistol.y = this.image.y - Math.sin(this.image.rotation)*this.image.displayWidth/2;
+      this.gun.x = this.image.x - Math.cos(this.image.rotation)*this.image.displayWidth/1.5;
+      this.gun.y = this.image.y - Math.sin(this.image.rotation)*this.image.displayWidth/1.5;
 
     // console.log(this.image.rotation);
 

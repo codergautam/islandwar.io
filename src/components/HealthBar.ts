@@ -36,7 +36,6 @@ class HealthBar extends Phaser.GameObjects.Container {
   
     setHealth (amount: number, amount2: number=0)
     {
-  
         const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
         this.value = clamp(amount, 0, this.maxValue);
         this.value2 = clamp(amount2, 0, this.maxValue);
