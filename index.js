@@ -27,7 +27,7 @@ app.use("/", express.static(__dirname+"/public"));
 const axios = require("axios");
 const { randomUUID } = require("crypto");
 
-const recaptcha = true;
+const recaptcha = process.env.RECAPTCHA == "true";
 // require("dotenv").config()
 
 
@@ -110,6 +110,7 @@ app.ws("/ws", (ws, req) => {
      }
  
      if(thetoken == process.env.bot) return joinThemIn();
+     else if(!recaptcha) return joinThemIn();
      else {
          var send = {
      secret: process.env.captchaserver,

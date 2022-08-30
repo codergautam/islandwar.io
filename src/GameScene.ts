@@ -141,103 +141,6 @@ class GameScene extends Phaser.Scene {
 
 
       // this.deathScreen = new DeathScreen(this);
-if( (this.localStorageAvailable && window.localStorage.getItem("story") == "true") || this.storyWatched){
-} else {
-this.lastKnownMyDisplayWidth = 0;
-
-
-     this.vid = this.add.video(0, 0).setOrigin(0.5).setDepth(0);
-     this.vid.loadURL("/assets/videos/intro.mp4");
-     this.vid.setData("stop", 0);
-      this.vid.play();
-
-      this.skipButton = this.add.image(this.canvas.width, this.canvas.height, "skip").setOrigin(1).setDepth(1).setInteractive().setScale(this.canvas.width /4000);
-  this.cameras.main.ignore(this.skipButton);
-
-      this.skipButton.on("pointerdown", () => {
-        if(this.skipped) return;
-        this.skipped = true;
-       
-        this.uiCam.fadeOut(500);
-        // go();
-      if(this.localStorageAvailable) {
-       window.localStorage.setItem("story", "true");
-      }
-      this.storyWatched = true;
-
-        this.uiCam.on("camerafadeoutcomplete", () => {
-          go();
-          this.uiCam.fadeIn(1000);
-        this.vid.destroy();
-        this.vidText.destroy();
-        this.skipButton.destroy();
-        this.skipped = false;
-        });
-      });
-
-      this.vidText = this.add.text(10, this.canvas.height, "Click anywhere to continue", {
-        fontSize: "40px",
-        color: "#fff",
-        align: "center",
-        fontFamily: "Finlandica"
-      }).setOrigin(0, 1).setDepth(1).setVisible(false);
-
-      this.cameras.main.ignore(this.vidText);
-
-    
-      this.vid.on("complete", () => {
-        go();
-        this.vid.destroy();
-        this.vidText.destroy();
-        this.skipButton.destroy();
-     if(this.localStorageAvailable) {
-        window.localStorage.setItem("story", "true");
-     }
-     this.storyWatched = true;
-
-      });
-      this.cameras.main.ignore(this.vid);
-
-      const click = () => {
-        if(this.vid && this.vid.visible) {
-          var vidEnds = [3, 7, 11, 15, 19, 23];
-          // var vidStops = [1, 5.7, 9, 14, 17.5, 23];
-          this.vid.setPaused(false);
-          this.vidText.setVisible(false);
-
-
-         
-          if(!vidEnds[this.vid.getData("stop")-1] || (vidEnds[this.vid.getData("stop")-1] - this.vid.getCurrentTime())  < 0) {
-           if(!vidEnds[this.vid.getData("stop")]) {
-            go( )
-            this.vid.destroy();
-            this.vidText.destroy();
-            this.skipButton.destroy();
-           if(this.localStorageAvailable) {
-            window.localStorage.setItem("story", "true");
-           }
-           this.storyWatched = true;
-
-           } else {
-            this.vid.setCurrentTime("+"+(vidEnds[this.vid.getData("stop")] - this.vid.getCurrentTime()));
-           }
-          } else this.vid.setCurrentTime("+"+(vidEnds[this.vid.getData("stop")-1] - this.vid.getCurrentTime()));
-
-          console.log("+"+(vidEnds[this.vid.getData("stop")-1] - this.vid.getCurrentTime()))
-          
-        }
-      }
-
-      this.input.on("pointerdown", () => {
-        click();
-      })
-
-      //on enter click
-      this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER, false);
-      this.enterKey.on("down", () => {
-        click();
-      });
-    }
 
 
       const go = () => {
@@ -959,6 +862,8 @@ if(this.dominationBar && this.dominationBar.visible) {
   resize();
 }
       }
+      go();
+
 // console.log(window.localStorage.getItem("story"));
 if(( this.localStorageAvailable &&window.localStorage.getItem("story") == "true") || this.storyWatched){
   console.log("story");

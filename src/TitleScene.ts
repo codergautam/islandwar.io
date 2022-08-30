@@ -11,7 +11,6 @@ class TitleScene extends Phaser.Scene {
   rect: Phaser.GameObjects.Rectangle;
   enterKey: Phaser.Input.Keyboard.Key;
   titleMusic: Phaser.Sound.BaseSound;
-  introButton: ImgButton;
     localStorageAvailable: boolean;
   storyWatched: boolean;
   constructor(callback: Function) {
@@ -52,15 +51,6 @@ class TitleScene extends Phaser.Scene {
       color: "#000000",
       fontFamily: "Finlandica, Arial",
     }).setOrigin(0.5).setDepth(15).setScrollFactor(0, 0).setScale(0);
-
-    this.introButton = new ImgButton(this, 0, 0, "introButton", () => {
-     if(this.localStorageAvailable) window.localStorage.setItem("story", "false");
-     this.storyWatched = false;
-      click();
-    });
-    this.introButton.btn.setScale(this.canvas.width / 3000);
-    this.introButton.btn.x += this.introButton.btn.displayWidth/2;
-    this.introButton.btn.y += this.introButton.btn.displayHeight/2;
     
 
 
@@ -138,13 +128,6 @@ this.enterKey.on("down", click);
        this.rect.setPosition(this.canvas.width/2, this.text.y - this.text.displayHeight);
         this.rect.setSize(this.text.displayWidth /1.5,  (this.canvas.height / 2.2) - this.rect.y);
         this.rect.x -= this.rect.displayWidth/2;
-
-        this.introButton.btn.x = 0;
-        this.introButton.btn.y = 0;
-
-        this.introButton.btn.setScale(this.canvas.width / 3000);
-        this.introButton.btn.x += this.introButton.btn.displayWidth/2;
-        this.introButton.btn.y += this.introButton.btn.displayHeight/2;
 
   }
 }
