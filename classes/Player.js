@@ -156,53 +156,57 @@ class Player {
     };
   }
   getCorners(extraDiff = 1) {
-   // get each corner of the player's body
-   // make sure it's rotated correctly
+  //  // get each corner of the player's body
+  //  // make sure it's rotated correctly
 
-    var corners = [];
-    var angle = this.lookAngle+0.785398;
-    var x = this.pos.x;
-    var y = this.pos.y;
-    var length = this.bodySize * extraDiff;
+  //   var corners = [];
+  //   var angle = this.lookAngle+0.785398;
+  //   var x = this.pos.x;
+  //   var y = this.pos.y;
+  //   var length = this.bodySize * extraDiff;
 
-    var cos = Math.cos(angle);
-    var sin = Math.sin(angle);
+  //   var cos = Math.cos(angle);
+  //   var sin = Math.sin(angle);
 
-    corners.push({
-      x: x + cos * length,
-      y: y + sin * length,
-    });
-    corners.push({
-      x: x - cos * length,
-      y: y - sin * length,
-    });
-    corners.push({
-      x: x + sin * length,
-      y: y - cos * length,
-    });
-    corners.push({
-      x: x - sin * length,
-      y: y + cos * length,
-    });
-    // console.log(corners);
-    return corners;
+  //   corners.push({
+  //     x: x + cos * length,
+  //     y: y + sin * length,
+  //   });
+  //   corners.push({
+  //     x: x - cos * length,
+  //     y: y - sin * length,
+  //   });
+  //   corners.push({
+  //     x: x + sin * length,
+  //     y: y - cos * length,
+  //   });
+  //   corners.push({
+  //     x: x - sin * length,
+  //     y: y + cos * length,
+  //   });
+  //   // console.log(corners);
+  //   return corners;
+
+  throw new Error("No longer used");
 
   }
   getCenterPoint() {
-    var corners = this.getCorners();
-    //find center point
-    var x = 0;
-    var y = 0;
-    for(var i = 0; i < corners.length; i++) {
-      x += corners[i].x;
-      y += corners[i].y;
-    }
-    x /= corners.length;
-    y /= corners.length;
-    return {
-      x,
-      y,
-    }
+    // var corners = this.getCorners();
+    // //find center point
+    // var x = 0;
+    // var y = 0;
+    // for(var i = 0; i < corners.length; i++) {
+    //   x += corners[i].x;
+    //   y += corners[i].y;
+    // }
+    // x /= corners.length;
+    // y /= corners.length;
+    // return {
+    //   x,
+    //   y,
+    // }
+
+    throw new Error("No longer used");
   }
 
   tick(tickDiff) {
@@ -304,7 +308,6 @@ class Player {
     this.bodySize = 100 + (this.sizeLevel == 1 ? 0 : this.sizeLevel == 2 ? 50 : 100);
     // console.log(this.bodySize);/
 
-    var corners = this.getCorners(0.5);
     // this.socket.emit("corners", [this.pos])
     //shoot
     //cloning the object is necessary because the object is changed in the tick function

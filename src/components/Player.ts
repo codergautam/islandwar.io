@@ -162,7 +162,7 @@ export default class Player extends Phaser.GameObjects.Container {
 
     const convert = (num, val, newNum) => (newNum * val) / num
     // console.log(convert(100, 40, this.bodySize));
-    this.nameTag.setFontSize(convert(100, 40, data.bodySize));
+    this.nameTag.setFontSize(convert(100, 30, data.bodySize));
     this.healthBar.bar.setScale(convert(100, 1, data.bodySize));
     // this.healthBar.setScale(convert(100, 1, data.bodySize));
 
@@ -183,7 +183,7 @@ export default class Player extends Phaser.GameObjects.Container {
       this.circle.setFillStyle(this.id == (this.scene as GameScene).socket.id ? 0xFFFF00 : this.team == "red" ? 0xFF0000 : 0x0000FF);
       this.healthBar.y = 0;
       this.healthBar.bar.y = -1.6 * (this.image.displayHeight / 2);
-      this.nameTag.y = -1.9 * (this.image.displayHeight / 2);
+      this.nameTag.y = -2.1 * (this.image.displayHeight / 2);
     } 
 
     this.healthBar.maxValue = data.maxHealth;
@@ -202,6 +202,7 @@ export default class Player extends Phaser.GameObjects.Container {
     });
 
     if(this.id == (this.scene as GameScene).socket.id) {
+
       if(!this.oldUntilNextLevel) this.oldUntilNextLevel = [data.untilNextLevel];
       if(this.oldLevel != data.level) {
         (this.scene as GameScene).spicyMeter.setLerpValue(0);

@@ -50,17 +50,19 @@ class Bullet {
   collidingPlayer(entity) {
     if(entity.id == this.owner) return false;
 
-    var corners = entity.getCorners();
-    var arr = [];
-    corners.forEach(function(corner) {
-      arr.push(corner.x);
-      arr.push(corner.y);
-    });
+    // var corners = entity.getCorners();
+    // var arr = [];
+    // corners.forEach(function(corner) {
+    //   arr.push(corner.x);
+    //   arr.push(corner.y);
+    // });
   
-    //check is inside corners
+    // //check is inside corners
     
 
-    return intersect.circlePolygon(this.pos.x, this.pos.y, this.length, arr);
+    // return intersect.circlePolygon(this.pos.x, this.pos.y, this.length, arr);
+
+    return intersect.circleCircle(this.pos.x, this.pos.y, this.length, entity.pos.x, entity.pos.y, entity.bodySize/2);
 
   }
   collidingBullet(bullet) {

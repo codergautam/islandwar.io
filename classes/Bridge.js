@@ -50,7 +50,8 @@ module.exports = class Bridge {
       corners.push(corner.x);
       corners.push(corner.y);
     });
-    var center = player.getCenterPoint();
+    // var center = player.getCenterPoint();
+    var center = player.pos;
 
     return intersect.pointPolygon(center.x, center.y, corners);
   }

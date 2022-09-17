@@ -9,7 +9,6 @@ import Leaderboard from "./components/Leaderboard";
 import GameMap from "./components/Map";
 import Pepper from "./components/Pepper";
 import Player from "./components/Player";
-import TeamPicker from "./components/TeamPicker";
 import MySocket from "./helpers/mySocket";
 import { PlayerData, FirstPlayerData, BulletData, IslandData, BridgeData, PepperData } from "./helpers/Packets";
 
@@ -42,7 +41,6 @@ class GameScene extends Phaser.Scene {
   controller: {left: boolean, right: boolean, up: boolean, down: boolean};
   islands: Island[];
   uiCam: Phaser.Cameras.Scene2D.Camera;
-  teamPicker: TeamPicker;
   deathScreen: DeathScreen;
   callback: Function;
   dominationBar: HealthBar;
@@ -148,63 +146,21 @@ class GameScene extends Phaser.Scene {
         console.log("go");
 
 
-      this.teamPicker = new TeamPicker(this);
-      this.cameras.main.ignore(this.teamPicker);
 
 
       // this.minimap.ignore(this.teamPicker);
 
-      var team = "red";
       this.team = "none";
 
-      this.teamPicker.rect1.rect.on("pointerdown", () => {
         if(this.clickedTeam) return;
-        if((this.teamPicker.rect1.getData("oppositeCount") == 0 && this.teamPicker.rect1.getData("count") != 0)|| (this.teamPicker.rect1.getData("count")- this.teamPicker.rect1.getData("oppositeCount") >= 2 && this.teamPicker.rect1.getData("oppositeCount") != 0)) {
-          return;
-        }
+    
         this.clickedTeam = true;
-        team = "red";
         // this.teamPicker.visible = false;
-        this.tweens.add({
-          targets: this.teamPicker,
-          alpha: 0,
-          duration: 1000,
-          ease: "Linear",
-          onComplete: () => {
-        this.titleMusic.stop();
-            this.teamPicker.destroy();
-
-          start();
-          },
-        });
-      });
-      this.teamPicker.rect2.rect.on("pointerdown", () => {
-        if(this.clickedTeam) return;
-        if((this.teamPicker.rect2.getData("oppositeCount") == 0 && this.teamPicker.rect2.getData("count") != 0)|| (this.teamPicker.rect2.getData("count")- this.teamPicker.rect2.getData("oppositeCount") >= 2 && this.teamPicker.rect2.getData("oppositeCount") != 0)) {
-          return;
-        }
-        this.clickedTeam = true;
-        team = "blue";
-        // this.teamPicker.visible = false;
-
-        this.tweens.add({
-          targets: this.teamPicker,
-          alpha: 0,
-          duration: 1000,
-          ease: "Linear",
-          onComplete: () => {
-        this.titleMusic.stop();
-            this.teamPicker.destroy();
-
-          start();
-          // console.log("team");
-          },
-        });
-      });
-
+    
+       
       
 
-       var start = () => {
+      var start = () => {
         this.loadingText = this.add.text(
           this.canvas.width / 2,
           this.canvas.height / 2,
@@ -216,10 +172,9 @@ class GameScene extends Phaser.Scene {
         this.socket = new MySocket(new WebSocket("ws://localhost:3000/ws"));
         this.socket.socket.onopen = () => {
           console.log("Connected");
-      this.socket.send("go", {name: this.name, team: team, mouseMove: this.mobile?true:false, thetoken: thetoken}); 
+      this.socket.send("go", {name: this.name, mouseMove: this.mobile?true:false, thetoken: thetoken}); 
          // this.socket.send("go", this.name, team, true, thetoken); 
          
-      this.team = `${team}`;
 
       this.background = this.add.tileSprite(0, 0, this.canvas.width, this.canvas.height, "background").setOrigin(0).setDepth(-10);
 				// this.background.fixedToCamera = true;
@@ -259,7 +214,7 @@ this.minimap.setVisible(false);
     
       this.add.existing(this.killCount);
       this.killCount.addImage("pepper", {
-        key: team == "blue"? "bluePepper" : "redPepper",
+        key: this.team == "blue"? "bluePepper" : "redPepper",
         width: 45,
         height: 45
       });
@@ -321,9 +276,11 @@ this.minimap.setVisible(false);
       this.dominationBar.bar.x -= this.dominationBar.width / 2;
 
      const playerJoined = (data: FirstPlayerData) =>{
+      
         this.players.set(data.id, new Player(this, data.pos.x, data.pos.y, data.id, data.name, data.team, undefined, undefined, data.joinTime).setDepth(2));
         if(this.socket.id === data.id) {
          this.cameras.main.startFollow(this.players.get(data.id));
+         this.team = data.team;
         //  this.minimap.startFollow(this.players.get(data.id));
               }
         }
@@ -744,58 +701,7 @@ try {
       this.background.height = this.canvas.height;
     }
 
-    if(this.teamPicker && this.teamPicker.visible) {
-      this.teamPicker.resize();
-      this.teamPicker.rect1.rect.on("pointerdown", () => {
-        if(this.clickedTeam) return;
-        if((this.teamPicker.rect1.getData("oppositeCount") == 0 && this.teamPicker.rect1.getData("count") != 0)|| (this.teamPicker.rect1.getData("count")- this.teamPicker.rect1.getData("oppositeCount") >= 2 && this.teamPicker.rect1.getData("oppositeCount") != 0)) {
-          return;
-        }
-        this.clickedTeam = true;
-        team = "red";
-        // this.teamPicker.visible = false;
-
-        this.tweens.add({
-          targets: this.teamPicker,
-          alpha: 0,
-          duration: 1000,
-          ease: "Linear",
-          onComplete: () => {
-        this.titleMusic.stop();
-            this.teamPicker.destroy();
-
-          start();
-          // console.log("team");
-          },
-        });
-      });
-      
-      this.teamPicker.rect2.rect.on("pointerdown", () => {
-        
-        if(this.clickedTeam) return;
-        if((this.teamPicker.rect2.getData("oppositeCount") == 0 && this.teamPicker.rect2.getData("count") != 0)|| (this.teamPicker.rect2.getData("count")- this.teamPicker.rect2.getData("oppositeCount") >= 2 && this.teamPicker.rect2.getData("oppositeCount") != 0)) {
-          return;
-        }
-        this.clickedTeam = true;
-        team = "blue";
-        // this.teamPicker.visible = false;
-
-        this.tweens.add({
-          targets: this.teamPicker,
-          alpha: 0,
-          duration: 1000,
-          ease: "Linear",
-          onComplete: () => {
-        this.titleMusic.stop();
-            this.teamPicker.destroy();
-
-          start();
-          // console.log("team");
-          },
-        });
-
-      });
-    }
+   
 
     this.captureText?.setFontSize(Math.min(this.canvas.width / 10, 70));
     this.captureText?.setX(this.canvas.width / 2 );
@@ -861,6 +767,7 @@ if(this.dominationBar && this.dominationBar.visible) {
 
   resize();
 }
+start();
       }
       go();
 
