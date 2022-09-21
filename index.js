@@ -85,9 +85,8 @@ app.ws("/ws", (ws, req) => {
     var data = data.d;
 
     if(type == "go") {
-      console.log("wowoowowowwoowowow")
       if(ws.room != null) return;
-     var { name, team, mouseMove, thetoken} = data;
+     var { name, team, mouseMove, thetoken, team} = data;
      if(!name || typeof name != "string") return;
      name = name.trim();
      if(scan(name).contains) {
@@ -98,11 +97,10 @@ app.ws("/ws", (ws, req) => {
      const joinThemIn = () => {
            if(name.length == 0) return ws.disconnect();
  
-     if(!team || typeof team != "string") team = "red";
-     if(team != "red" && team != "blue") team = "red";
+     if(!team || typeof team != "string") team = "none";
  
      name = name.substring(0,16);
-     var player = new Player(name, ws.id, ws, mouseMove);
+     var player = new Player(name, ws.id, ws, mouseMove, team);
      player.team = team;
      roomlist.getAllRooms()[0].addPlayer(player);
      ws.room = roomlist.getAllRooms()[0].id;

@@ -41,7 +41,6 @@ class Bullet {
 
     this.length = 5;
     ws.helper.to(this.roomId).emit("addBullet", this.getSendObject());
-  console.log("bullet created")
   }
   tick(tickDiff) {
     this.pos.x += Math.cos(this.angle) * this.speed * 50 * (tickDiff / 50);

@@ -37,6 +37,7 @@ class GameScene extends Phaser.Scene {
   bullets: Map<string, Bullet>
   mouseAngle: number;
   map: GameMap;
+  oldTeam: string;
   fpsCounter: Phaser.GameObjects.Text;
   controller: {left: boolean, right: boolean, up: boolean, down: boolean};
   islands: Island[];
@@ -172,7 +173,7 @@ class GameScene extends Phaser.Scene {
         this.socket = new MySocket(new WebSocket("ws://localhost:3000/ws"));
         this.socket.socket.onopen = () => {
           console.log("Connected");
-      this.socket.send("go", {name: this.name, mouseMove: this.mobile?true:false, thetoken: thetoken}); 
+      this.socket.send("go", {name: this.name, mouseMove: this.mobile?true:false, thetoken: thetoken, team: this.oldTeam}); 
          // this.socket.send("go", this.name, team, true, thetoken); 
          
 
@@ -398,7 +399,6 @@ try {
       })
       this.socket.on("addBullet", (data: BulletData) => {
         if(!this.bullets.has(data.id)) {
-          console.log("addBullet", data);
           this.bullets.set(data.id, new Bullet(this, data).setDepth(1));
           if(data.owner == this.socket?.id) {
             this.shoot.play();
@@ -475,6 +475,9 @@ try {
 
       this.socket.on("youDied", ({reason, who, survivedTime, shotDragons, peppers}) => {
        var me = this.players.get(this.socket.id);
+
+       this.oldTeam = me.team;
+
        this.killCount.visible = false;
        this.minimap.visible = false;
        this.spiceText.visible = false;

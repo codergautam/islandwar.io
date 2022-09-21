@@ -8,7 +8,7 @@ const levels = require("../helpers/levels")
 
 
 class Player {
-  constructor(name, id=idgen(), socket=undefined, mouseMove=true) {
+  constructor(name, id=idgen(), socket=undefined, mouseMove=true, team="none") {
     this.name = name;
     this.id = id;
     this.roomId = null;
@@ -51,7 +51,7 @@ class Player {
     this.bodySize = 100 + (this.sizeLevel == 1 ? 0 : this.sizeLevel == 2 ? 20 : 40);
 
 
-    this.team = Math.random() > 0.5 ? "red" : "blue";
+    this.team = team
 
     this.hit = false;
     this.lookAngle = 0;
@@ -99,6 +99,19 @@ class Player {
     var mainIsland = room.islands[0];
     var randomPos = mainIsland.getRandomPoint(0.4);
     this.pos = randomPos;
+
+    if(this.team == "none") {
+    // find team with least players
+    var totalPlayers = room.players.size;
+    var redCount = Array.from(room.players.values()).filter((p) => p.team == "red").length;
+    if(redCount > totalPlayers / 2) {
+      this.team = "blue";
+    } if(redCount < totalPlayers / 2) {
+      this.team = "red";
+    } else {
+      this.team = Math.random() > 0.5 ? "red" : "blue";
+    }
+  }
       
     this.socketHelper.emit("joinRoom", room.id);
   }
