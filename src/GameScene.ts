@@ -215,7 +215,12 @@ this.minimap.setVisible(false);
     
       this.add.existing(this.killCount);
       this.killCount.addImage("pepper", {
-        key: this.team == "blue"? "bluePepper" : "redPepper",
+        key: "redDiamond",
+        width: 45,
+        height: 45
+      });
+      this.killCount.addImage("pepper2", {
+        key: "blueDiamond",
         width: 45,
         height: 45
       });
@@ -257,7 +262,7 @@ this.minimap.setVisible(false);
       this.spiceText = this.add.text(
         this.canvas.width / 2,
         this.spicyMeter.y,
-        "🌶️ Spicy Level: 1 (0%)",
+        "Level: 1 (0%)",
         {
           color: "#000000",
           fontFamily: "Finlandica",
@@ -282,6 +287,9 @@ this.minimap.setVisible(false);
         if(this.socket.id === data.id) {
          this.cameras.main.startFollow(this.players.get(data.id));
          this.team = data.team;
+         
+      this.killCount.setText(`[img=${this.team == "red" ? "pepper" : "pepper2"}] 0`);
+
         //  this.minimap.startFollow(this.players.get(data.id));
               }
         }

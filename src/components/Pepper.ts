@@ -10,7 +10,7 @@ export default class Pepper extends Phaser.GameObjects.Container {
     this.y = y;
     this.id = id;
 
-    this.image = new Phaser.GameObjects.Image(scene, 0, 0, color+"Pepper").setScale(0.2).setAlpha(0);
+    this.image = new Phaser.GameObjects.Image(scene, 0, 0, color+"Diamond").setScale(0.1).setAlpha(0);
     this.scene.tweens.add({
       targets: this.image,
       alpha: 1,

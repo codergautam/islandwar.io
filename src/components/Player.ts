@@ -214,13 +214,9 @@ export default class Player extends Phaser.GameObjects.Container {
       let sum = 0;
       if(this.oldUntilNextLevel.length > 1) sum = this.oldUntilNextLevel[this.oldUntilNextLevel.length - 2];
       if((data.peppers - sum)/(data.untilNextLevel - sum) > 1 && data.level == 10) {
-        (this.scene as GameScene).spiceText.setText("🌶️ FULLY SPICED UP 🌶️");
-        if(!(this.scene as GameScene).shownFly) {
-          (this.scene as GameScene).shownFly = true;
-          (this.scene as GameScene).levelQueue.push("Flying activated!!! 🚀");
-        }
+        (this.scene as GameScene).spiceText.setText("MAX LEVEL");
 
-      } else (this.scene as GameScene).spiceText.setText("🌶️  Spicy Level: "+data.level+" ("+Math.round((data.peppers - sum)/(data.untilNextLevel - sum)*100)+"%)");
+      } else (this.scene as GameScene).spiceText.setText("Level: "+data.level+" ("+Math.round((data.peppers - sum)/(data.untilNextLevel - sum)*100)+"%)");
 
       (this.scene as GameScene).spicyMeter.setLerpValue((data.peppers - sum)/(data.untilNextLevel - sum)*100);
       this.oldLevel = data.level;
@@ -229,7 +225,8 @@ export default class Player extends Phaser.GameObjects.Container {
     if(this.id == (this.scene as GameScene).socket.id) {
 
       if(data.peppers >= 0) {
-    (this.scene as GameScene).killCount.setText("[img=pepper] " + data.peppers ?? 0);
+
+    (this.scene as GameScene).killCount.setText(`[img=${this.team == "red" ? "pepper" : "pepper2"}] ` + data.peppers ?? 0);
       }
 
     if(this.oldPeppers != data.peppers) {

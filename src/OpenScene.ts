@@ -53,8 +53,8 @@ var progress = (1 - (remainder / total) as any);
       this.load.image("home", "/assets/images/home.png");
       this.load.image("again", "/assets/images/again.jpeg");
       
-      this.load.image("redPepper", "/assets/images/redPepper.png");
-      this.load.image("bluePepper", "/assets/images/bluePepper.png");
+      this.load.image("redDiamond", "/assets/images/redDiamond.png");
+      this.load.image("blueDiamond", "/assets/images/blueDiamond.png");
       
       this.load.image("grass", "/assets/images/circlegrass.png");
       this.load.audio("titleMusic", "/assets/audio/title.mp3");
