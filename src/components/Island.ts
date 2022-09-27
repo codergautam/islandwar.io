@@ -7,7 +7,6 @@ export default class Island extends Phaser.GameObjects.Container {
   id: number;
   capturingCircle: Phaser.GameObjects.Ellipse;
   flag: Phaser.GameObjects.Image;
-  background: Phaser.GameObjects.Image;
   dir: number;
   lastUpdate: number;
   capturingBy: string;
@@ -28,9 +27,6 @@ export default class Island extends Phaser.GameObjects.Container {
 
     (this.scene as GameScene).minimap.ignore(this.flag);
 
-    this.background = new Phaser.GameObjects.Image(scene, 0, 0, "grass").setOrigin(0.5);
-    this.background.setScale(data.size/1900);
-
 
     // if(this.capturedBy == "red") console.log(this.id + " is captured by red");
    
@@ -43,7 +39,6 @@ export default class Island extends Phaser.GameObjects.Container {
     this.add(this.island);
     this.add(this.capturingCircle);
     this.add(this.flag);
-    if(data.size >= 1000) this.add(this.background);
     this.scene.add.existing(this);
     (this.scene as GameScene).uiCam.ignore(this);
 
