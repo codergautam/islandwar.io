@@ -93,7 +93,7 @@ class Player {
         }
       }
     }
-  }                                                                                                           
+  }
   joinRoom(room) {
     this.roomId = room.id;
     var mainIsland = room.islands[0];
@@ -106,13 +106,15 @@ class Player {
     var redCount = Array.from(room.players.values()).filter((p) => p.team == "red").length;
     if(redCount > totalPlayers / 2) {
       this.team = "blue";
-    } if(redCount < totalPlayers / 2) {
+    } else if(redCount < totalPlayers / 2) {
       this.team = "red";
     } else {
       this.team = Math.random() > 0.5 ? "red" : "blue";
     }
+    console.log("total players: " + totalPlayers, "red players: " + redCount, "chosen team: " + this.team);
+
   }
-      
+
     this.socketHelper.emit("joinRoom", room.id);
   }
   updateController(controller) {
@@ -150,7 +152,7 @@ class Player {
       canFly: this.canFly,
 
       joinTime: this.spawnTime,
-      
+
     }
   }
   getSendObject() {
@@ -161,7 +163,7 @@ class Player {
       health: this.health,
       peppers: this.peppers,
       hit: this.hit,
-      level: this.level, 
+      level: this.level,
       untilNextLevel: this.untilNextLevel,
       bodySize: this.bodySize,
       maxHealth: this.maxHealth,
@@ -225,12 +227,12 @@ class Player {
   tick(tickDiff) {
     //move
     if(this.queuedForDeath) return;
-    
+
     var levelMult = this.speedLevel == 1 ? 1.5 : this.speedLevel == 2 ? 2 : 3;
     if(!this.mouseMove) {
     // get angle from controller
     var angle = 0;
-    
+
     if(this.controller.down && this.controller.right) {
       angle += 0.785398;
     }
@@ -255,15 +257,15 @@ class Player {
     else if(this.controller.left) {
       angle += 3.141593;
     }
-    
+
     var isMoving = this.controller.left || this.controller.right || this.controller.up || this.controller.down;
     if(isMoving) {
     var speed = this.speed * this.speedMultiplier * levelMult;
-    
+
     this.pos.x += Math.cos(angle) * speed * tickDiff * 0.18;
     this.pos.y += Math.sin(angle) * speed * tickDiff * 0.18;
     }
-  } else 
+  } else
 
     if(this.mouseMove) {
     var speed = this.speed * this.speedMultiplier * levelMult;
@@ -325,7 +327,7 @@ class Player {
     //shoot
     //cloning the object is necessary because the object is changed in the tick function
     var pos =JSON.parse(JSON.stringify(this.pos));
- 
+
     var newAngle = this.lookAngle;
    pos.x += (Math.cos(newAngle + Math.PI / 4) * this.speed * (75));
     pos.y += (Math.sin(newAngle + Math.PI / 4) * this.speed * (75));

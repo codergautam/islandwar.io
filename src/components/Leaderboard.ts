@@ -7,7 +7,7 @@ export default class Leaderboard extends Phaser.GameObjects.Container {
   text: BBCodeText;
   constructor(scene: GameScene) {
     super(scene as Phaser.Scene);
-   
+
     this.scene.add.existing(this);
     scene.minimap.ignore(this);
     scene.cameras.main.ignore(this);
@@ -15,7 +15,7 @@ export default class Leaderboard extends Phaser.GameObjects.Container {
     this.text = new BBCodeText(scene, scene.canvas.width-10, 0, "", {
       fontSize: '50px',
       fontFamily: 'Arial',
-      color: '#000000',
+      color: '#FFFFFF',
       align: 'center'
     }).setOrigin(1, 0);
     this.text.addImage("pepper", {
@@ -28,7 +28,7 @@ export default class Leaderboard extends Phaser.GameObjects.Container {
 
   }
   end() {
-    
+
   }
   preUpdate() {
     var gameScene = this.scene as GameScene;

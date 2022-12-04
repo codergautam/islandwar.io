@@ -86,7 +86,7 @@ class GameScene extends Phaser.Scene {
       super("game");
 
       this.callback = callback;
-    
+
     }
     preload() {
       this.shownFly = false;
@@ -99,7 +99,7 @@ class GameScene extends Phaser.Scene {
       this.killCombo = 0;
       this.peppers = new Map();
 
-      		try {       
+      		try {
 			(document.getElementsByClassName("grecaptcha-badge")[0] as any).style.opacity = 0;
 		} catch(e) {
 			console.log(e);
@@ -154,12 +154,12 @@ class GameScene extends Phaser.Scene {
       this.team = "none";
 
         if(this.clickedTeam) return;
-    
+
         this.clickedTeam = true;
         // this.teamPicker.visible = false;
-    
-       
-      
+
+
+
 
       var start = () => {
         this.loadingText = this.add.text(
@@ -173,11 +173,11 @@ class GameScene extends Phaser.Scene {
         this.socket = new MySocket(new WebSocket("ws://localhost:3000/ws"));
         this.socket.socket.onopen = () => {
           console.log("Connected");
-      this.socket.send("go", {name: this.name, mouseMove: this.mobile?true:false, thetoken: thetoken, team: this.oldTeam}); 
-         // this.socket.send("go", this.name, team, true, thetoken); 
-         
+      this.socket.send("go", {name: this.name, mouseMove: this.mobile?true:false, thetoken: thetoken, team: this.oldTeam});
+         // this.socket.send("go", this.name, team, true, thetoken);
 
-      this.background = this.add.tileSprite(0, 0, this.canvas.width, this.canvas.height, "background").setOrigin(0).setDepth(-10);
+
+      this.background = this.add.tileSprite(0, 0, this.canvas.width, this.canvas.height, "tile").setOrigin(0).setDepth(-10);
 				// this.background.fixedToCamera = true;
         this.uiCam.ignore(this.background);
 
@@ -200,7 +200,7 @@ this.minimap.setVisible(false);
       this.captureText = this.add.text(this.canvas.width / 2, this.canvas.height / 5, "", {
         fontSize: Math.min(this.canvas.width/10, 70)+"px",
         fontFamily: "Finlandica",
-        color: "#000000",
+        color: "#FFFFFF",
         align: "center",
       }).setDepth(10);
       this.captureText.setOrigin(0.5);
@@ -210,9 +210,9 @@ this.minimap.setVisible(false);
 
       this.killCount = new BBCodeText(this, 15, 10, "Stabs: 0", {
         fontFamily: "Georgia, \"Goudy Bookletter 1911\", Times, serif",
-        fill: "#000000",
+        fill: "#FFFFFF",
       }).setFontSize(40).setDepth(101).setVisible(false);
-    
+
       this.add.existing(this.killCount);
       this.killCount.addImage("pepper", {
         key: "redDiamond",
@@ -231,7 +231,7 @@ this.minimap.setVisible(false);
 
       this.cameras.main.ignore(this.killCount);
       this.minimap.ignore(this.killCount);
-      
+
 
       this.map = new GameMap(this);
       this.leaderboard = new Leaderboard(this);
@@ -240,7 +240,7 @@ this.minimap.setVisible(false);
         this.canvas.height /100,
         "",
         {
-          color: "#000000",
+          color: "#FFFFFF",
           fontFamily: "Finlandica",
         }
       ).setOrigin(0.5, 0).setFontSize(this.canvas.width / 30).setDepth(101);
@@ -251,7 +251,7 @@ this.minimap.setVisible(false);
       this.dominationBar.setVisible(false);
 
 
-  
+
 
       this.spicyMeter = new HealthBar(this, this.canvas.width / 4, this.canvas.height - this.canvas.height / 15, this.canvas.width / 2, this.canvas.height / 20, "spicy", true ).setDepth(10);
       this.spicyMeter.draw();
@@ -264,7 +264,7 @@ this.minimap.setVisible(false);
         this.spicyMeter.y,
         "Level: 1 (0%)",
         {
-          color: "#000000",
+          color: "#FFFFFF",
           fontFamily: "Finlandica",
         }
       ).setOrigin(0.5, 0).setFontSize(this.canvas.width / 30).setDepth(101);
@@ -282,12 +282,12 @@ this.minimap.setVisible(false);
       this.dominationBar.bar.x -= this.dominationBar.width / 2;
 
      const playerJoined = (data: FirstPlayerData) =>{
-      
+
         this.players.set(data.id, new Player(this, data.pos.x, data.pos.y, data.id, data.name, data.team, undefined, undefined, data.joinTime).setDepth(2));
         if(this.socket.id === data.id) {
          this.cameras.main.startFollow(this.players.get(data.id));
          this.team = data.team;
-         
+
       this.killCount.setText(`[img=${this.team == "red" ? "pepper" : "pepper2"}] 0`);
 
         //  this.minimap.startFollow(this.players.get(data.id));
@@ -348,8 +348,8 @@ this.minimap.setVisible(false);
           island.setPercent(data.capturedPercentage, data.capturingBy);
           // console.log(data);
 
-        
-          
+
+
 
         }
       })
@@ -385,7 +385,7 @@ try {
           this.spicyMeter.setVisible(true);
           this.dominationText.setVisible(true);
           this.dominationBar.setVisible(true);
-          
+
 
 
         this.loadingText.destroy();
@@ -454,7 +454,7 @@ try {
       // this.socket.on("islandCaptured", (id: number, team: string) => {
       //   // console.log("islandCaptured", id, team);
       //   this.islands.find(i => i.id === id).setTeam(team);
-        
+
       // });
       // this.socket.on("islandCapturing", (id: number, team: string, percent: number) => {
       //   // console.log("islandCapturing", id, team, percent);
@@ -478,7 +478,7 @@ try {
       //   // console.log(pos);
       //   if(this.cirle) this.cirle.destroy();
       //   this.cirle =  this.add.circle(pos.x, pos.y, 5, 0x00FF0F).setOrigin(0.5).setDepth(10);
-       
+
       // })
 
       this.socket.on("youDied", ({reason, who, survivedTime, shotDragons, peppers}) => {
@@ -495,14 +495,14 @@ try {
       //  this.dominationBar.visible = false;
       this.dominationBar.bar.visible = false;
        this.dominationText.visible = false;
-       
+
        if(reason != "drown") this.dead.play();
        else this.water.play();
 
        this.tweens.add({
           targets: me,
           alpha: 0,
-          
+
           duration: 500,
           onComplete: () => {
             // console.log("youDied", reason, who, survivedTime, shotDragons, peppers);
@@ -511,24 +511,24 @@ try {
 
         this.players.delete(this.socket.id);
 
-        
+
           },
-        });     
+        });
       });
-     
+
       this.socket.on("levelUp", (type, level) => {
         //first letter capital
         type = type.charAt(0).toUpperCase() + type.slice(1);
         if(type == "Bullet") type += "s";
         this.levelQueue.push(type+" upgraded!");
-        
-      
- 
+
+
+
 
       })
       this.socket.on("shotDragon", ({who, id, reason}) => {
         // console.log("shotDragon", who, id, reason);
-        var txt = `[b][color=#e82a1f]Shot [/color][color=#0000FF]${who}[/color][/b]`;
+        var txt = `[b][color=#e82a1f]Blasted [/color][color=#0000FF]${who}[/color][/b]`;
 
         // console.log(reason)
 
@@ -570,7 +570,7 @@ try {
 								duration: 250
 							});
 						};
-            
+
 
 					this.tweens.add({
 						targets: this.shotText,
@@ -595,7 +595,7 @@ try {
         a: 'A',
         d: 'D',
         space: 'space',
-    }, false) as Keys);  
+    }, false) as Keys);
 
     this.controller = {
       up: false,
@@ -622,7 +622,7 @@ try {
     keys.left.on('down', () => {
       this.controller.left = true;
       this.socket.send("controller", this.controller);
-    }); 
+    });
     keys.right.on('down', () => {
       this.controller.right = true;
       this.socket.send("controller", this.controller);
@@ -655,7 +655,7 @@ try {
     keys.left.on('up', () => {
       this.controller.left = false;
       this.socket.send("controller", this.controller);
-    }); 
+    });
     keys.right.on('up', () => {
       this.controller.right = false;
       this.socket.send("controller", this.controller);
@@ -712,7 +712,7 @@ try {
       this.background.height = this.canvas.height;
     }
 
-   
+
 
     this.captureText?.setFontSize(Math.min(this.canvas.width / 10, 70));
     this.captureText?.setX(this.canvas.width / 2 );
@@ -820,15 +820,15 @@ if(( this.localStorageAvailable &&window.localStorage.getItem("story") == "true"
         }, 2000);
       }
     });
-    
-  
+
+
   }
-       
+
   }
-    
+
 
   update(time: number, delta: number): void {
-    
+
    Array.from(this.players.values()).forEach(player => player.updateObject());
    Array.from(this.bullets.values()).forEach(bullet => bullet.updateObject());
 
@@ -869,33 +869,33 @@ if(this.vid && this.vid.visible) {
  }
 }
 
-   if(this.background) {
-   this.background.setTilePosition(this.cameras.main.scrollX * 0.9, this.cameras.main.scrollY * 0.9 );
-   this.background.setTileScale(this.cameras.main.zoom, this.cameras.main.zoom);
+if(this.background) {
+  this.background.setTilePosition(this.cameras.main.scrollX * 0.275, this.cameras.main.scrollY * 0.275 );
+  this.background.setTileScale(this.cameras.main.zoom, this.cameras.main.zoom);
 
-   //get screen center coords
-    var centerX = this.cameras.main.scrollX + this.canvas.width / 2;
-    var centerY = this.cameras.main.scrollY + this.canvas.height / 2;
-
-    
-
-
-   this.background.x = centerX- (this.cameras.main.displayWidth / (2 / 1.1));
-   this.background.y = centerY - (this.cameras.main.displayHeight/ (2 / 1.1));
+  //get screen center coords
+   var centerX = this.cameras.main.scrollX + this.canvas.width / 2;
+   var centerY = this.cameras.main.scrollY + this.canvas.height / 2;
 
 
 
-  //  this.background.x = this.background.x - (this.background.x * -0.05);
-  //   this.background.y = this.background.y - (this.background.y * -0.05);
+
+  this.background.x = centerX- (this.cameras.main.displayWidth / (2 / 1.1));
+  this.background.y = centerY - (this.cameras.main.displayHeight/ (2 / 1.1));
 
 
 
- 
+ //  this.background.x = this.background.x - (this.background.x * -0.05);
+ //   this.background.y = this.background.y - (this.background.y * -0.05);
 
-  this.background.displayWidth = this.cameras.main.displayWidth * 1.1;
-  this.background.displayHeight = this.cameras.main.displayHeight * 1.1;
- 
-   }
+
+
+
+
+ this.background.displayWidth = this.cameras.main.displayWidth * 1.1;
+ this.background.displayHeight = this.cameras.main.displayHeight * 1.1;
+
+  }
    this.iCantThinkOfWhatToCallThis();
 
    if(this.spicyMeter && this.spicyMeter.visible) {
@@ -945,7 +945,7 @@ if(this.vid && this.vid.visible) {
           distance = Math.min(distance/ratio * 4, 1);
         }
         // console.log(distance);
-        
+
       // console.log(this.players.get(this.socket.id).needsFlip);
       this.socket.send("mouse", {mouseAngle: this.mouseAngle, distance, needsFlip: false});
       }
@@ -960,16 +960,15 @@ if(this.vid && this.vid.visible) {
     //  console.log(this.lastKnownMyDisplayWidth);
 
      show += this.lastKnownMyDisplayWidth * 3;
-    
+
      //var oldZoom = this.cameras.main.zoom;
      var newZoom = Math.max(this.scale.width / show, this.scale.height / show);
       this.cameras.main.setZoom(
        newZoom
-     ); 
-      // console.log(this.background.tileScaleX, this.background.tileScaleY);
+     );
 
       var me = this.players.get(this.socket?.id);
-    
+
       if(me && this.captureText && this.islands.some(island => island.inIsland(me.x, me.y))) {
         var island = this.islands.find(island => island.inIsland(me.x, me.y));
         if(island && island.dir != 0 && (island.dir > 0 ? island.capturingBy == this.team : island.capturingBy != this.team)) {
@@ -981,7 +980,7 @@ if(this.vid && this.vid.visible) {
       } else {
         this.captureText?.setText("");
       }
-    
+
   }
 }
 

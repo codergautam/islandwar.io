@@ -29,13 +29,13 @@ export default class Island extends Phaser.GameObjects.Container {
 
 
     // if(this.capturedBy == "red") console.log(this.id + " is captured by red");
-   
+
     this.island = new Phaser.GameObjects.Ellipse(scene, 0, 0, data.size, data.size, data.capturedBy == "none" ? 0x838579: data.capturedBy == "red" ? 0xFF3632 : 0x009dff).setOrigin(0.5).setDepth(1);
-    
+
     if(data.capturedPercentage < 100) {
       this.setPercent(data.capturedPercentage, data.capturingBy);
     }
-    
+
     this.add(this.island);
     this.add(this.capturingCircle);
     this.add(this.flag);
@@ -93,7 +93,7 @@ export default class Island extends Phaser.GameObjects.Container {
     var r = gameScene.add.text(gameScene.canvas.width / 2, gameScene.canvas.height / 5, "Island Captured!", {
       fontSize: Math.min(gameScene.canvas.width/10, 70)+"px",
       fontFamily: "Arial",
-      color: "#000000",
+      color: "#FFFFFF",
       align: "center"
     }).setDepth(10).setAlpha(0);
     gameScene.captured.play();
@@ -139,11 +139,11 @@ export default class Island extends Phaser.GameObjects.Container {
     this.capturingCircle.setFillStyle(team == "red" ? 0xFF3632 : team == "none" ? 0x838579 : 0x0096ff);
     this.capturingCircle.setVisible(true);
     this.capturingCircle.setScale(percent/100);
- 
+
   }
   inIsland(x: number, y: number) {
     //check if point in isalnd
-   
+
     var radius = this.island.displayWidth/2;
     var x2 = this.x;
     var y2 = this.y;
@@ -152,7 +152,7 @@ export default class Island extends Phaser.GameObjects.Container {
     return dist < radius;
   }
   preUpdate(delta) {
-   
+
     var curPercent = this.capturingCircle.scaleX * 100;
     var diff = Date.now() - this.lastUpdate;
     // console.log(curPercent, this.capturingCircle.scaleX);

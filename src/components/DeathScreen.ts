@@ -68,7 +68,7 @@ export default class DeathScreen extends Phaser.GameObjects.Container {
       fontFamily: "Finlandica",
 
     }).setOrigin(0.5, 0);
-    
+
     this.moreData = new Phaser.GameObjects.Text(scene, scene.canvas.width / 2, this.deadText.y + scene.canvas.height / 10,"", {
       fontSize: Math.min(scene.canvas.width /30, scene.canvas.height / 20) + "px",
       color: "#ff0000",
@@ -84,7 +84,7 @@ export default class DeathScreen extends Phaser.GameObjects.Container {
         var value = tween.getValue();
         // console.log(value);
         // console.log(this.who);
-        this.moreData.setText((this.reason == "drown" ? !this.who ? "You fell into the water!" : "Shot into water by "+this.who : "You were shot by "+this.who)+`\n\nSurvived Time: ${msToTime(this.survivedTime * (value / 100))}\nDragons shot: ${Math.round(this.shotDragons * (value/100))}\nPeppers collected: ${Math.ceil(this.peppers*(value/100))}`)
+        this.moreData.setText((this.reason == "drown" ? !this.who ? "You fell into the void!" : "Blasted into void by "+this.who : "You were blasted by "+this.who)+`\n\nSurvived Time: ${msToTime(this.survivedTime * (value / 100))}\nDragons shot: ${Math.round(this.shotDragons * (value/100))}\nPeppers collected: ${Math.ceil(this.peppers*(value/100))}`)
       },
       duration: 1000,
       ease: 'Linear',
@@ -106,7 +106,7 @@ export default class DeathScreen extends Phaser.GameObjects.Container {
     //   (this.scene as GameScene).scene.start("title");
     // });
 
-    
+
 
     // console.log(this.box.displayWidth, this.respawnbutton.btn.disp);
     while (this.respawnbutton.btn.displayWidth > this.box.displayWidth * 2 || this.respawnbutton.btn.displayHeight > this.box.displayHeight / 3.5) {
@@ -120,7 +120,7 @@ export default class DeathScreen extends Phaser.GameObjects.Container {
     this.respawnbutton.y = this.box.displayHeight;
     // this.homebutton.y = this.respawnbutton.y + this.respawnbutton.btn.displayHeight - 5;
 
-    
+
 this.box.setAlpha(0);
 this.deadText.setAlpha(0);
 this.moreData.setAlpha(0);
@@ -132,12 +132,12 @@ this.respawnbutton.btn.setAlpha(0);
       duration: 100,
       ease: 'Linear',
     });
-    
-    
+
+
 
 
     this.add(this.box);
-   
+
     this.add(this.deadText);
     this.add(this.respawnbutton);
     // this.add(this.homebutton);

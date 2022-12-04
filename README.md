@@ -1,5 +1,5 @@
-# spicywar.io
-A multiplayer game where you try to become the spiciest of them all!
+# islandwar.io
+A multiplayer game where you try to capture all the islands and dominate
 
 ## Setup & Running
 ### Debug
@@ -10,7 +10,7 @@ npm run build
 ```
 #### Staring
 Once the game is built, run `npm start` to execute it.
-### Production 
+### Production
 #### Building
 ```sh
 npm install --include=dev

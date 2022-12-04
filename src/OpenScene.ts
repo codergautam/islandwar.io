@@ -15,10 +15,10 @@ class OpenScene extends Phaser.Scene {
     preload() {
       console.time("load");
         this.e = true;
-        this.background = this.add.rectangle(0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, 0x2e74e6).setOrigin(0).setScrollFactor(0, 0).setScale(2);
+        this.background = this.add.rectangle(0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, 0x000000).setOrigin(0).setScrollFactor(0, 0).setScale(2);
    this.loadText =  this.add.text(0,0,"Loading").setOrigin(0.5,0.5);
    this.progressText = this.add.text(0,0,"please wait.").setOrigin(0.5,0.5);
-      
+
       this.loadText.setFontSize(this.canvas.width/20);
       this.progressText.setFontSize(this.canvas.width/40);
       this.loadText.x = this.canvas.width/2;
@@ -37,25 +37,25 @@ var progress = (1 - (remainder / total) as any);
       //load images
 
       this.load.image("title", "/assets/images/title.png");
-      
+
       this.load.html("namebox", "/assets/html/name.html");
       // this.load.image("dragon", "/assets/images/dragon.png");
 
       this.load.image("redPlayer", "/assets/images/redPlayer.png");
       this.load.image("bluePlayer", "/assets/images/bluePlayer.png");
-      
-      this.load.image("background", "/assets/images/background.jpeg");
+
       this.load.image("bridge", "/assets/images/bridge.png");
 
       //introbutton
       this.load.image("introButton", "/assets/images/intro.png");
-      
+      this.load.image("tile", "/assets/images/tile.jpeg");
+
       this.load.image("home", "/assets/images/home.png");
       this.load.image("again", "/assets/images/again.jpeg");
-      
+
       this.load.image("redDiamond", "/assets/images/redDiamond.png");
       this.load.image("blueDiamond", "/assets/images/blueDiamond.png");
-      
+
       this.load.image("grass", "/assets/images/circlegrass.png");
       this.load.audio("titleMusic", "/assets/audio/title.mp3");
       this.load.audio("pick", "/assets/audio/pick.wav");
@@ -88,16 +88,16 @@ var progress = (1 - (remainder / total) as any);
 
         this.scale.fullscreenTarget = document.getElementById("game");
         console.timeEnd("load");
-  
+
     }
 
     create() {
-    
+
              this.scene.stop();
              this.scene.start("title");
     }
     update() {
-    
+
     }
 }
 
