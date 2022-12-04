@@ -21,14 +21,14 @@ class TitleScene extends Phaser.Scene {
   }
   create() {
     this.titleMusic = this.sound.add("titleMusic", {
-      volume: 0.5,
+      volume: 0.3,
       loop: true
     });
     this.titleMusic.play();
     this.rect = this.add.rectangle(0,0,0,0, 0xffffe0).setOrigin(0.5).setScale(2).setDepth(10);
     this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER, false);
     this.nameBox = this.add.dom(0,0).createFromCache("namebox").setScale(0);
-    
+
 
     if(this.localStorageAvailable && window.localStorage.getItem("name") !== null) {
       (this.nameBox.getChildByName('name') as any).value = window.localStorage.getItem("name");
@@ -51,7 +51,7 @@ class TitleScene extends Phaser.Scene {
       color: "#000000",
       fontFamily: "Finlandica, Arial",
     }).setOrigin(0.5).setDepth(15).setScrollFactor(0, 0).setScale(0);
-    
+
 
 
     this.tweens.add({
@@ -72,7 +72,7 @@ const click = () => {
   this.nameBox.destroy();
   this.text.destroy();
   this.rect.destroy();
-  
+
 
  if(this.localStorageAvailable) window.localStorage.setItem("name", name);
 
@@ -89,7 +89,7 @@ this.enterKey.on("down", click);
 
     //this.stats.y -= this.stats.height
 
-    const resize = () => { 
+    const resize = () => {
 
       // this.game.scale.resize(this.canvas.width, this.canvas.height);
 
@@ -106,9 +106,9 @@ this.enterKey.on("down", click);
       // check if tween is running
       // if(this.tweens.isTweening(this.text)) {
       this.text.y = this.canvas.height / 3;
-      
+
       this.text.x = this.canvas.width / 2;
-      
+
 
       this.nameBox.x = this.canvas.width / 2;
       this.nameBox.y = this.canvas.height / 2.2;

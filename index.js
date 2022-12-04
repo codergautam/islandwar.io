@@ -36,6 +36,14 @@ const recaptcha = process.env.RECAPTCHA == "true";
 //     next();
 //   }, 1000);
 // })
+const helmet = require("helmet"); //require helmet
+app.use(helmet()); //Use helmet
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 min
+  max: 300, // limit each IP to 52 requests per min
+});
+app.use(limiter);
 
 app.use("/assets", express.static(__dirname+"/assets"));
 
@@ -65,7 +73,7 @@ function validate(data) {
   if(!data.hasOwnProperty("d")) return false;
   return true;
 }
-app.ws("/ws", (ws, req) => { 
+app.ws("/ws", (ws, req) => {
 
   ws.id = randomUUID();
   ws.room = null;
@@ -93,12 +101,12 @@ app.ws("/ws", (ws, req) => {
        name = "*".repeat(name.length);
      }
      if(!thetoken) return ws.close();
- 
+
      const joinThemIn = () => {
            if(name.length == 0) return ws.disconnect();
- 
+
      if(!team || typeof team != "string") team = "none";
- 
+
      name = name.substring(0,16);
      var player = new Player(name, ws.id, ws, mouseMove, team);
      player.team = team;
@@ -106,7 +114,7 @@ app.ws("/ws", (ws, req) => {
      ws.room = roomlist.getAllRooms()[0].id;
        console.log(ws.id +" joined!")
      }
- 
+
      if(thetoken == process.env.bot) return joinThemIn();
      else if(!recaptcha) return joinThemIn();
      else {
